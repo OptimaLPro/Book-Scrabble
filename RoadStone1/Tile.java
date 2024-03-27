@@ -45,6 +45,7 @@ public class Tile {
     public static class Bag {
         private static Bag bag = null;
         int[] tilesQuaninty = new int[26];
+        int[] originalQuantity = new int[26];
         Tile[] tiles = new Tile[26];
 
         @Override
@@ -80,6 +81,8 @@ public class Tile {
             tilesQuaninty[24] = 2;
             tilesQuaninty[25] = 1;
 
+            System.arraycopy(tilesQuaninty, 0, originalQuantity, 0, tilesQuaninty.length);
+
             tiles[0] = new Tile('A', 1);
             tiles[1] = new Tile('B', 3);
             tiles[2] = new Tile('C', 3);
@@ -113,7 +116,7 @@ public class Tile {
 
             Random rand = new Random();
             int tileCell = rand.nextInt(26);
-            
+
             if (tilesQuaninty[tileCell] == 0)
                 return null;
             else {
@@ -123,10 +126,13 @@ public class Tile {
         }
 
         public Tile getTile(char tileChar) {
+            if (tileChar < 'A' || tileChar > 'Z')
+                return null;
+
             int tileCell = tileChar - 'A';
 
             if (tilesQuaninty[tileCell] == 0)
-                return 0;
+                return null;
             else {
                 tilesQuaninty[tileCell]--;
                 return tiles[tileCell];
@@ -134,9 +140,10 @@ public class Tile {
         }
 
         public void put(Tile tileReturn) {
-            // must add verification if tile is exeeding basic amount
             int tileCell = tileReturn.letter - 'A';
-            tilesQuaninty[tileCell]++;
+
+            if (tilesQuaninty[tileCell] < originalQuantity[tileCell])
+                tilesQuaninty[tileCell]++;
         }
 
         public int size() {
