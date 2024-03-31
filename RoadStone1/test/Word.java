@@ -3,7 +3,7 @@ package test;
 import java.util.Arrays;
 
 public class Word {
-    private Tile[] wordTiles;
+    private final Tile[] wordTiles;
     private final int row, col;
     private final boolean vertical;
 

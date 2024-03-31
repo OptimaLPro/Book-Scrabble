@@ -50,12 +50,4 @@ public class Board {
 
         return true;
     }
-
-    public dictionaryLegal(){
-        return true;
-    }
-
-    public getWords(Word word){
-        
-    }
 }

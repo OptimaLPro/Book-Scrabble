@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Tile {
-    final public char letter;
-    final public int score;
+    final char letter;
+    final int score;
 
     @Override
     public int hashCode() {
@@ -37,11 +37,6 @@ public class Tile {
         return "Tile [letter=" + letter + ", score=" + score;
     }
 
-    // public Tile() {
-    // this.letter = null;
-    // this.score = null;
-    // }
-
     private Tile(char letter, int score) {
         this.letter = letter;
         this.score = score;
@@ -49,9 +44,9 @@ public class Tile {
 
     public static class Bag {
         private static Bag bag = null;
-        private int[] tilesQuaninty = new int[26];
-        private int[] originalQuantity = new int[26];
-        private Tile[] tiles = new Tile[26];
+        private int[] tilesQuaninty;
+        private final int[] originalQuantity;
+        private final Tile[] tiles;
 
         @Override
         public String toString() {
@@ -59,11 +54,13 @@ public class Tile {
         }
 
         private Bag() {
-            tilesQuaninty = new int[] {
+            originalQuantity = new int[] {
                     9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1
             };
 
-            System.arraycopy(tilesQuaninty, 0, originalQuantity, 0, tilesQuaninty.length);
+            tilesQuaninty = new int[originalQuantity.length];
+
+            System.arraycopy(originalQuantity, 0, tilesQuaninty, 0, originalQuantity.length);
 
             tiles = new Tile[] {
                     new Tile('A', 1),
@@ -152,6 +149,14 @@ public class Tile {
             }
             return bag;
         }
+    }
+
+    public char getLetter() {
+        return letter;
+    }
+
+    public int getScore() {
+        return score;
     }
 
 }
