@@ -2,10 +2,10 @@ package test;
 
 import java.util.Arrays;
 
-public class Word extends Tile {
-    final private Tile[] wordTiles;
-    final private int row, col;
-    final private boolean vertical;
+public class Word {
+    private Tile[] wordTiles;
+    private final int row, col;
+    private final boolean vertical;
 
     public Word(Tile[] wordTiles, int row, int col, boolean vertical) {
         this.wordTiles = wordTiles;
@@ -60,9 +60,4 @@ public class Word extends Tile {
             return false;
         return true;
     }
-
-    
-
-    
-	
 }

@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Tile {
-    final char letter;
-    final int score;
+    final public char letter;
+    final public int score;
 
     @Override
     public int hashCode() {
@@ -37,6 +37,11 @@ public class Tile {
         return "Tile [letter=" + letter + ", score=" + score;
     }
 
+    // public Tile() {
+    // this.letter = null;
+    // this.score = null;
+    // }
+
     private Tile(char letter, int score) {
         this.letter = letter;
         this.score = score;
@@ -44,9 +49,9 @@ public class Tile {
 
     public static class Bag {
         private static Bag bag = null;
-        int[] tilesQuaninty = new int[26];
-        int[] originalQuantity = new int[26];
-        Tile[] tiles = new Tile[26];
+        private int[] tilesQuaninty = new int[26];
+        private int[] originalQuantity = new int[26];
+        private Tile[] tiles = new Tile[26];
 
         @Override
         public String toString() {
@@ -54,61 +59,40 @@ public class Tile {
         }
 
         private Bag() {
-            tilesQuaninty[0] = 9;
-            tilesQuaninty[1] = 2;
-            tilesQuaninty[2] = 2;
-            tilesQuaninty[3] = 4;
-            tilesQuaninty[4] = 12;
-            tilesQuaninty[5] = 2;
-            tilesQuaninty[6] = 3;
-            tilesQuaninty[7] = 2;
-            tilesQuaninty[8] = 9;
-            tilesQuaninty[9] = 1;
-            tilesQuaninty[10] = 1;
-            tilesQuaninty[11] = 4;
-            tilesQuaninty[12] = 2;
-            tilesQuaninty[13] = 6;
-            tilesQuaninty[14] = 8;
-            tilesQuaninty[15] = 2;
-            tilesQuaninty[16] = 1;
-            tilesQuaninty[17] = 6;
-            tilesQuaninty[18] = 4;
-            tilesQuaninty[19] = 6;
-            tilesQuaninty[20] = 4;
-            tilesQuaninty[21] = 2;
-            tilesQuaninty[22] = 2;
-            tilesQuaninty[23] = 1;
-            tilesQuaninty[24] = 2;
-            tilesQuaninty[25] = 1;
+            tilesQuaninty = new int[] {
+                    9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1
+            };
 
             System.arraycopy(tilesQuaninty, 0, originalQuantity, 0, tilesQuaninty.length);
 
-            tiles[0] = new Tile('A', 1);
-            tiles[1] = new Tile('B', 3);
-            tiles[2] = new Tile('C', 3);
-            tiles[3] = new Tile('D', 2);
-            tiles[4] = new Tile('E', 1);
-            tiles[5] = new Tile('F', 4);
-            tiles[6] = new Tile('G', 2);
-            tiles[7] = new Tile('H', 4);
-            tiles[8] = new Tile('I', 1);
-            tiles[9] = new Tile('J', 8);
-            tiles[10] = new Tile('K', 5);
-            tiles[11] = new Tile('L', 1);
-            tiles[12] = new Tile('M', 3);
-            tiles[13] = new Tile('N', 1);
-            tiles[14] = new Tile('O', 1);
-            tiles[15] = new Tile('P', 3);
-            tiles[16] = new Tile('Q', 10);
-            tiles[17] = new Tile('R', 1);
-            tiles[18] = new Tile('S', 1);
-            tiles[19] = new Tile('T', 1);
-            tiles[20] = new Tile('U', 1);
-            tiles[21] = new Tile('V', 4);
-            tiles[22] = new Tile('W', 4);
-            tiles[23] = new Tile('X', 8);
-            tiles[24] = new Tile('Y', 4);
-            tiles[25] = new Tile('Z', 10);
+            tiles = new Tile[] {
+                    new Tile('A', 1),
+                    new Tile('B', 3),
+                    new Tile('C', 3),
+                    new Tile('D', 2),
+                    new Tile('E', 1),
+                    new Tile('F', 4),
+                    new Tile('G', 2),
+                    new Tile('H', 4),
+                    new Tile('I', 1),
+                    new Tile('J', 8),
+                    new Tile('K', 5),
+                    new Tile('L', 1),
+                    new Tile('M', 3),
+                    new Tile('N', 1),
+                    new Tile('O', 1),
+                    new Tile('P', 3),
+                    new Tile('Q', 10),
+                    new Tile('R', 1),
+                    new Tile('S', 1),
+                    new Tile('T', 1),
+                    new Tile('U', 1),
+                    new Tile('V', 4),
+                    new Tile('W', 4),
+                    new Tile('X', 8),
+                    new Tile('Y', 4),
+                    new Tile('Z', 10)
+            };
         }
 
         public Tile getRand() {
