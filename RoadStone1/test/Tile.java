@@ -37,7 +37,7 @@ public class Tile {
         return "Tile [letter=" + letter + ", score=" + score;
     }
 
-    private Tile(char letter, int score) {
+    Tile(char letter, int score) {
         this.letter = letter;
         this.score = score;
     }
@@ -118,6 +118,11 @@ public class Tile {
                 tilesQuaninty[tileCell]--;
                 return tiles[tileCell];
             }
+        }
+
+        public int getTileScore(char tileChar) {
+            int tileCell = tileChar - 'A';
+            return tiles[tileCell].score;
         }
 
         public void put(Tile tileReturn) {
