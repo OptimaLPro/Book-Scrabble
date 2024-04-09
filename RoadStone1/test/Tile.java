@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Tile {
-    final char letter;
-    final int score;
+    public final char letter;
+    public final int score;
 
     @Override
     public int hashCode() {
@@ -93,17 +93,17 @@ public class Tile {
         }
 
         public Tile getRand() {
-            // must add: if bag empty, return null;
+            if (size() == 0)
+                return null;
 
             Random rand = new Random();
             int tileCell = rand.nextInt(26);
 
-            if (tilesQuaninty[tileCell] == 0)
-                return null;
-            else {
-                tilesQuaninty[tileCell]--;
-                return tiles[tileCell];
-            }
+            while (tilesQuaninty[tileCell] == 0)
+                tileCell = rand.nextInt(26);
+
+            tilesQuaninty[tileCell]--;
+            return tiles[tileCell];
         }
 
         public Tile getTile(char tileChar) {
@@ -133,8 +133,8 @@ public class Tile {
         }
 
         public int size() {
-            int count = 0; // counter for tiles number
-            for (int i = 0; i < 26; i++) {
+            int count = 0;
+            for (int i = 0; i < tilesQuaninty.length; i++) {
                 count += tilesQuaninty[i];
             }
 
@@ -149,7 +149,6 @@ public class Tile {
 
         public static Bag getBag() {
             if (bag == null) {
-                // Initialize the bag if it's null
                 bag = new Bag();
             }
             return bag;
