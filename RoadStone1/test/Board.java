@@ -2,48 +2,51 @@ package test;
 
 import java.util.ArrayList;
 
-import test.Tile.Bag;
-
 public class Board {
-    private boolean firstWordOnBoard = false;
     private final static int BOARD_SIZE = 15;
     private final static int CENTER = BOARD_SIZE / 2;
-    private final int[][] score;
     private static Board board = null;
     private Tile[][] grid;
-    private ArrayList<Word> onBoardWords = new ArrayList<>(); // change to set
-    private boolean middleTileActive = true;
+    final private int[][] tileMultiplier;
+    private int[][] wordMultiplier;
 
     public Board() {
         this.grid = new Tile[BOARD_SIZE][BOARD_SIZE];
-        // for (int i = 0; i < BOARD_SIZE; i++) {
-        // for (int j = 0; j < BOARD_SIZE; j++) {
-        // this.grid[i][j] = null;
-        // }
-        // }
 
-        // 9 = "Star"
-        // 2 = "Double word score"
-        // 3 = "Tripple word score"
-        // 4 = "Double letter score"
-        // 5 = "Tripple letter score"
+        this.tileMultiplier = new int[][] {
+                { 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1 }, // 1
+                { 1, 1, 1, 1, 1, 3, 1, 1, 1, 3, 1, 1, 1, 1, 1 }, // 2
+                { 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1 }, // 3
+                { 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2 }, // 4
+                { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, // 5
+                { 1, 3, 1, 1, 1, 3, 1, 1, 1, 3, 1, 1, 1, 3, 1 }, // 6
+                { 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1 }, // 7
+                { 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1 }, // 8
+                { 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1 }, // 9
+                { 1, 3, 1, 1, 1, 3, 1, 1, 1, 3, 1, 1, 1, 3, 1 }, // 10
+                { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, // 11
+                { 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2 }, // 12
+                { 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1 }, // 13
+                { 1, 1, 1, 1, 1, 3, 1, 1, 1, 3, 1, 1, 1, 1, 1 }, // 14
+                { 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1 } // 15
+        };
 
-        this.score = new int[][] {
-                { 3, 0, 0, 4, 0, 0, 0, 3, 0, 0, 0, 4, 0, 0, 3 }, // 1
-                { 0, 2, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 2, 0 }, // 2
-                { 0, 0, 2, 0, 0, 0, 4, 0, 4, 0, 0, 0, 2, 0, 0 }, // 3
-                { 4, 0, 0, 2, 0, 0, 0, 4, 0, 0, 0, 2, 0, 0, 4 }, // 4
-                { 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0 }, // 5
-                { 0, 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 5, 0 }, // 6
-                { 0, 0, 4, 0, 0, 0, 4, 0, 4, 0, 0, 0, 4, 0, 0 }, // 7
-                { 3, 0, 0, 4, 0, 0, 0, 9, 0, 0, 0, 4, 0, 0, 3 }, // 8
-                { 0, 0, 4, 0, 0, 0, 4, 0, 4, 0, 0, 0, 4, 0, 0 }, // 9
-                { 0, 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 5, 0 }, // 10
-                { 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0 }, // 11
-                { 4, 0, 0, 2, 0, 0, 0, 4, 0, 0, 0, 2, 0, 0, 4 }, // 12
-                { 0, 0, 2, 0, 0, 0, 4, 0, 4, 0, 0, 0, 2, 0, 0 }, // 13
-                { 0, 2, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 2, 0 }, // 14
-                { 3, 0, 0, 4, 0, 0, 0, 3, 0, 0, 0, 4, 0, 0, 3 } // 15
+        this.wordMultiplier = new int[][] {
+                { 3, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 3 }, // 1
+                { 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1 }, // 2
+                { 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1 }, // 3
+                { 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1 }, // 4
+                { 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1 }, // 5
+                { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, // 6
+                { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, // 7
+                { 3, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 3 }, // 8
+                { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, // 9
+                { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, // 10
+                { 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1 }, // 11
+                { 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1 }, // 12
+                { 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1 }, // 13
+                { 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1 }, // 14
+                { 3, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 3 } // 15
         };
 
     }
@@ -56,7 +59,6 @@ public class Board {
     }
 
     public Tile[][] getTiles() {
-        // check yaron if its good
         Tile[][] copyArray = new Tile[BOARD_SIZE][BOARD_SIZE];
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
@@ -66,18 +68,18 @@ public class Board {
         return copyArray;
     }
 
-    public void print(Tile[][] grid) {
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                if (grid[i][j] == null) {
-                    System.out.print("0 ");
-                } else {
-                    System.out.print(grid[i][j].getLetter() + " ");
-                }
-            }
-            System.out.println();
-        }
-    }
+    // public void print(Tile[][] grid) {
+    // for (int i = 0; i < BOARD_SIZE; i++) {
+    // for (int j = 0; j < BOARD_SIZE; j++) {
+    // if (grid[i][j] == null) {
+    // System.out.print("0 ");
+    // } else {
+    // System.out.print(grid[i][j].getLetter() + " ");
+    // }
+    // }
+    // System.out.println();
+    // }
+    // }
 
     public boolean boardLegal(Word word) {
         boolean isVertical = word.isVertical();
@@ -89,342 +91,219 @@ public class Board {
             return false;
 
         if (isVertical) {
-            if (row + wordCount > BOARD_SIZE)
-                return false;
-        } else if (col + wordCount > BOARD_SIZE)
-            return false;
-
-        if (!firstWordOnBoard) {
-            if (isVertical) {
-                for (int i = 0; i < wordCount; i++) {
-                    if (col == CENTER && row + i == CENTER) {
-                        firstWordOnBoard = true;
-                        return true;
-                    }
-                }
-                return false;
-            } else {
-                for (int i = 0; i < wordCount; i++) {
-                    if (row == CENTER && col + i == CENTER) {
-                        firstWordOnBoard = true;
-                        return true;
-                    }
-                }
+            if (row + wordCount > BOARD_SIZE) {
                 return false;
             }
         } else {
-            if (!isVertical) {
-                if ((col > 1 && grid[row][col - 1] != null) || (col < BOARD_SIZE - 1 && grid[row][col + 1] != null))
-                    return true;
-            } else if ((row > 1 && grid[row - 1][col] != null) || (row < BOARD_SIZE - 1 && grid[row + 1][col] != null))
-                return true;
-
-            for (int i = 0; i < wordCount; i++) {
-                final int currRow = isVertical ? row + i : row;
-                final int currCol = isVertical ? col : col + i;
-                if (grid[currRow][currCol] != null)
-                    return true;
-                else if (!isVertical) {
-                    if ((row > 1 && grid[currRow - 1][currCol] != null)
-                            || (row < BOARD_SIZE - 1 && grid[currRow + 1][currCol] != null))
-                        return true;
-                } else if ((col > 1 && grid[currRow][currCol - 1] != null)
-                        || (col < BOARD_SIZE - 1 && grid[currRow][currCol + 1] != null))
-                    return true;
+            if (col + wordCount > BOARD_SIZE) {
+                return false;
             }
         }
-
+        if (grid[CENTER][CENTER] == null) {
+            if (isVertical) {
+                if (col != CENTER) {
+                    return false;
+                }
+                if (row + wordCount < CENTER || row > CENTER) {
+                    return false;
+                }
+            } else {
+                if (row != CENTER) {
+                    return false;
+                }
+                if (col + wordCount < CENTER || col > CENTER) {
+                    return false;
+                }
+            }
+        } else {
+            boolean flag = false;
+            if (isVertical) {
+                if (row - 1 >= 0 && grid[row - 1][col] != null) {
+                    flag = true;
+                } else if (row + wordCount + 1 < BOARD_SIZE && grid[row + wordCount + 1][col] != null) {
+                    flag = true;
+                } else {
+                    for (int i = row; i < row + wordCount; i++) {
+                        if (grid[i][col] != null) {
+                            flag = true;
+                            break;
+                        }
+                        if (col - 1 >= 0 && grid[i][col - 1] != null) {
+                            flag = true;
+                            break;
+                        }
+                        if (col + 1 < BOARD_SIZE && grid[i][col + 1] != null) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                }
+            } else {
+                if (col - 1 >= 0 && grid[row - 1][col] != null) {
+                    flag = true;
+                } else if (col + wordCount + 1 < BOARD_SIZE && grid[row][col + wordCount + 1] != null) {
+                    flag = true;
+                } else {
+                    for (int i = col; i < col + wordCount; i++) {
+                        if (grid[row][i] != null) {
+                            flag = true;
+                            break;
+                        }
+                        if (row - 1 >= 0 && grid[row - 1][i] != null) {
+                            flag = true;
+                            break;
+                        }
+                        if (row + 1 < BOARD_SIZE && grid[row + 1][i] != null) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!flag) {
+                return false;
+            }
+        }
         return true;
     }
 
-    public int getTotalWordScore(Word word) {
-        int totalWordScore = 0;
-        for (Tile tile : word.getWordTiles()) {
-            totalWordScore += tile.getScore();
-        }
-        return totalWordScore;
-    }
-
     public int getScore(Word word) {
-        final int wordCount = word.getWordTiles().length;
-        final boolean isVertical = word.isVertical();
-        int totalScore = 0;
-        int doubleWordScoreTiles = 0;
-        int tripleWordScoreTiles = 0;
+        int multiplier = 1;
+        int score = 0;
+        int row = word.getRow();
+        int col = word.getCol();
 
-        for (int i = 0; i < wordCount; i++) {
-            final int row = isVertical ? word.getRow() + i : word.getRow();
-            final int col = isVertical ? word.getCol() : word.getCol() + i;
-
-            int tileScore;
-
-            if (word.getWordTiles()[i] == null) {
-                // totalScore += grid[row][col].getScore();
-                tileScore = grid[row][col].getScore();
-            } else {
-                // if (grid[row][col] == null) {
-                tileScore = word.getWordTiles()[i].getScore();
+        if (word.isVertical()) {
+            for (int i = row; i < row + word.getWordTiles().length; i++) {
+                multiplier *= wordMultiplier[i][col];
+                if (i == CENTER && col == CENTER) {
+                    wordMultiplier[i][col] = 1;
+                }
+                score += word.getWordTiles()[i - row].getScore() * tileMultiplier[i][col];
             }
-            // 9 = "Star"
-            // 2 = "Double word score"
-            // 3 = "Tripple word score"
-            // 4 = "Double letter score"
-            // 5 = "Tripple letter score"
-
-            switch (this.score[row][col]) {
-                case 2:
-                    totalScore += tileScore;
-                    doubleWordScoreTiles++;
-                    break;
-                case 3:
-                    totalScore += tileScore;
-                    tripleWordScoreTiles++;
-                    break;
-                case 4:
-                    totalScore += tileScore * 2;
-                    break;
-                case 5:
-                    totalScore += tileScore * 3;
-                    break;
-                case 9:
-                    totalScore += tileScore;
-                    doubleWordScoreTiles++;
-                    break;
-                case 0:
-                    totalScore += tileScore;
-                    break;
-                default:
-                    break;
+        } else {
+            for (int i = col; i < col + word.getWordTiles().length; i++) {
+                multiplier *= wordMultiplier[row][i];
+                if (row == CENTER && i == CENTER) {
+                    wordMultiplier[row][i] = 1;
+                }
+                score += word.getWordTiles()[i - col].getScore() * tileMultiplier[row][i];
             }
         }
-
-        if (doubleWordScoreTiles > 0) {
-            totalScore *= 2 * doubleWordScoreTiles;
-        }
-        if (tripleWordScoreTiles > 0) {
-            totalScore *= 3 * tripleWordScoreTiles;
-        }
-
-        return totalScore;
+        return score * multiplier;
     }
 
     /////////////////////////////////////////
 
     public ArrayList<Word> getWords(Word word) {
-        ArrayList<Word> newWords = new ArrayList<>();
-
-        for (int i = 0; i < word.getWordTiles().length; i++) {
-            int row = word.isVertical() ? word.getRow() + i : word.getRow();
-            int col = word.isVertical() ? word.getCol() : word.getCol() + i;
-
-            Tile tile;
-            if (word.getWordTiles()[i] == null)
-                tile = grid[row][col];
-            else
-                tile = word.getWordTiles()[i];
-
-            // Check horizontally for new words
-            if (word.isVertical()) {
-                String newHorizontalWord = getHorizontalWord(row, col, tile);
-                if (newHorizontalWord.length() > 1 && !isOnBoard(word)) {
-                    newWords.add(new Word(convertStringToTiles(newHorizontalWord), row,
-                            col - newHorizontalWord.indexOf(tile.getLetter()), false));
-                }
-
-                // if (row > 1 && grid[row - 1][col] != null && word.getWordTiles()[0] != null)
-                // {
-                // String newVerticalWord2 = getVerticalWord(row - 1, col, grid[row - 1][col]);
-                // if (newVerticalWord2.length() > 1 && !isOnBoard(word)) {
-                // newWords.add(new Word(convertStringToTiles(newVerticalWord2), row -
-                // newVerticalWord2.indexOf(grid[row - 1][col].getLetter()), col, false));
-                // }
-                // }
-
-                // if (row < BOARD_SIZE - 1 && grid[row + 1][col] != null &&
-                // word.getWordTiles()[i] != null) {
-                // String newVerticalWord3 = getVerticalWord(row + 1, col, grid[row + 1][col]);
-                // if (newVerticalWord3.length() > 1 && !isOnBoard(word)) {
-                // newWords.add(new Word(convertStringToTiles(newVerticalWord3), row, col,
-                // false));
-                // }
-                // }
-            }
-
-            // Check vertically for new words
-            if (!word.isVertical()) {
-
-                String newVerticalWord = getVerticalWord(row, col, tile);
-                if (newVerticalWord.length() > 1 && !isOnBoard(word)) {
-                    newWords.add(new Word(convertStringToTiles(newVerticalWord),
-                            row - newVerticalWord.indexOf(tile.getLetter()), col, true));
-                }
-
-                // if (col > 1 && grid[row][col - 1] != null && word.getWordTiles()[i] != null)
-                // {
-                // String newHorizontalWord2 = getHorizontalWord(row, col - 1, grid[row][col -
-                // 1]);
-                // if (newHorizontalWord2.length() > 1 && !isOnBoard(word)) {
-                // newWords.add(new Word(convertStringToTiles(newHorizontalWord2), row, col -
-                // newHorizontalWord2.indexOf(grid[row][col - 1].getLetter()), true));
-                // }
-                // }
-
-                // if (col < BOARD_SIZE - 1 && grid[row][col + 1] != null &&
-                // word.getWordTiles()[i] != null) {
-                // String newHorizontalWord3 = getHorizontalWord(row, col + 1, grid[row][col +
-                // 1]);
-                // if (newHorizontalWord3.length() > 1 && !isOnBoard(word)) {
-                // newWords.add(new Word(convertStringToTiles(newHorizontalWord3), row, col,
-                // true));
-                // }
-                // }
-            }
-        }
-
-        int col = word.getCol();
+        ArrayList<Word> words = new ArrayList<Word>();
         int row = word.getRow();
-
+        int col = word.getCol();
+        int wordCount = word.getWordTiles().length;
+        Tile[] wordTiles = word.getWordTiles();
         if (word.isVertical()) {
-            if (word.getRow() > 1 && grid[row - 1][col] != null && word.getWordTiles()[0] != null) {
-                String newVerticalWord2 = getVerticalWord(row - 1, col, grid[row - 1][col]);
-                if (newVerticalWord2.length() > 1 && !isOnBoard(word)) {
-                    newWords.add(new Word(convertStringToTiles(newVerticalWord2),
-                            row - newVerticalWord2.indexOf(grid[row - 1][col].getLetter()), col, false));
+            for (int i = row; i < row + wordCount; i++) {
+                if (wordTiles[i - row] == null) {
+                    wordTiles[i - row] = grid[i][col];
+                } else {
+                    if (col - 1 >= 0 && grid[i][col - 1] != null) {
+                        words.add(collectWord(i, col - 1));
+                    } else if (col + 1 < BOARD_SIZE && grid[i][col + 1] != null) {
+                        words.add(collectWord(i, col + 1));
+                    }
                 }
             }
-
-            if (row < BOARD_SIZE - 1 && grid[row + 1][col] != null
-                    && word.getWordTiles()[word.getWordTiles().length - 1] != null) {
-                String newVerticalWord3 = getVerticalWord(row + 1, col, grid[row + 1][col]);
-                if (newVerticalWord3.length() > 1 && !isOnBoard(word)) {
-                    newWords.add(new Word(convertStringToTiles(newVerticalWord3), row, col, false));
+            words.add(new Word(wordTiles, row, col, true));
+        } else {
+            for (int i = col; i < col + wordCount; i++) {
+                if (wordTiles[i - col] == null) {
+                    wordTiles[i - col] = grid[row][i];
+                } else {
+                    if (row - 1 >= 0 && grid[row - 1][i] != null) {
+                        words.add(collectWordVertical(row - 1, i));
+                    } else if (row + 1 < BOARD_SIZE && grid[row + 1][i] != null) {
+                        words.add(collectWordVertical(row + 1, i));
+                    }
                 }
             }
+            words.add(new Word(wordTiles, row, col, false));
         }
-
-        if (!word.isVertical()) {
-            if (col > 1 && grid[row][col - 1] != null && word.getWordTiles()[0] != null) {
-                String newHorizontalWord2 = getHorizontalWord(row, col - 1, grid[row][col - 1]);
-                if (newHorizontalWord2.length() > 1 && !isOnBoard(word)) {
-                    newWords.add(new Word(convertStringToTiles(newHorizontalWord2), row,
-                            col - newHorizontalWord2.indexOf(grid[row][col - 1].getLetter()), true));
-                }
-            }
-
-            if (col < BOARD_SIZE - 1 && grid[row][col + 1] != null
-                    && word.getWordTiles()[word.getWordTiles().length - 1] != null) {
-                String newHorizontalWord3 = getHorizontalWord(row, col + 1, grid[row][col + 1]);
-                if (newHorizontalWord3.length() > 1 && !isOnBoard(word)) {
-                    newWords.add(new Word(convertStringToTiles(newHorizontalWord3), row, col, true));
-                }
-            }
-        }
-
-        newWords.add(word);
-        return newWords;
+        return words;
     }
 
-    private String getHorizontalWord(int row, int col, Tile tile) {
-        int originalCol = col;
-        StringBuilder horizontalWord = new StringBuilder();
-        while (col >= 0 && grid[row][col] != null) {
-            horizontalWord.insert(0, grid[row][col].getLetter());
-            col--;
+    private Word collectWordVertical(int row, int col) {
+        int j = row;
+        while (j >= 0 && grid[j][col] != null) {
+            j--;
         }
-        // col++;
-        col = originalCol;
-        if (col + 1 < BOARD_SIZE && grid[row][col + 1] != null)
-            col++;
-        while (col < BOARD_SIZE && grid[row][col] != null) {
-            horizontalWord.append(grid[row][col].getLetter());
-            col++;
+        j++;
+        int k = row;
+        while (k < BOARD_SIZE && grid[k][col] != null) {
+            k++;
         }
-        return horizontalWord.toString();
+        k--;
+        Tile[] tiles = new Tile[k - j + 1];
+        int start = j;
+        int l = 0;
+        while (j <= k) {
+            tiles[l] = grid[j][col];
+            l++;
+            j++;
+        }
+        return new Word(tiles, start, col, true);
     }
 
-    private String getVerticalWord(int row, int col, Tile tile) {
-        int originalRow = row;
-        int originalCol = col;
-        StringBuilder verticalWord = new StringBuilder();
-        boolean isOnBoard = true;
-
-        if (grid[row][col] == null) {
-            grid[row][col] = tile;
-            isOnBoard = false;
+    private Word collectWord(int row, int col) {
+        int j = col;
+        while (j >= 0 && grid[row][j] != null) {
+            j--;
         }
-
-        while (row >= 0 && grid[row][col] != null) {
-            verticalWord.insert(0, grid[row][col].getLetter());
-            row--;
+        j++;
+        int k = col;
+        while (k < BOARD_SIZE && grid[row][k] != null) {
+            k++;
         }
-        // row++;
-        row = originalRow;
-        if (row + 1 < BOARD_SIZE)
-            row++;
-        while (row < BOARD_SIZE && grid[row][col] != null) {
-            verticalWord.append(grid[row][col].getLetter());
-            row++;
+        k--;
+        Tile[] tiles = new Tile[k - j + 1];
+        int start = j;
+        int l = 0;
+        while (j <= k) {
+            tiles[l] = grid[row][j];
+            l++;
+            j++;
         }
-
-        if (!isOnBoard)
-            grid[originalRow][originalCol] = null;
-        return verticalWord.toString();
-    }
-
-    private Tile[] convertStringToTiles(String word) {
-        Tile[] tiles = new Tile[word.length()];
-        Bag b = Tile.Bag.getBag();
-        for (int i = 0; i < word.length(); i++) {
-            int tileScore = b.getTileScore(word.charAt(i));
-            tiles[i] = new Tile(word.charAt(i), tileScore);
-        }
-        return tiles;
+        return new Word(tiles, start, row, false);
     }
 
     private boolean dictionaryLegal(Word word) {
         return true;
     }
 
-    private boolean isOnBoard(Word word) {
-        for (Word onBoardWord : onBoardWords) {
-            if (onBoardWord.equals(word))
-                return true;
-        }
-        return false;
-    }
-
     public int tryPlaceWord(Word word) {
         if (!boardLegal(word)) {
             return 0;
         }
+        if (!dictionaryLegal(word)) {
+            return 0;
+        }
+        int row = word.getRow();
+        int col = word.getCol();
 
-        int totalScore = 0;
-        ArrayList<Word> newWords = getWords(word);
-
-        for (Word newWord : newWords) {
-            if (!dictionaryLegal(newWord)) {
-                return 0;
-            }
-            if (!isOnBoard(newWord)) {
-                totalScore += getScore(newWord);
-                onBoardWords.add(newWord);
+        for (Tile tile : word.getWordTiles()) {
+            if (tile != null)
+                grid[row][col] = tile;
+            if (word.isVertical()) {
+                row++;
+            } else {
+                col++;
             }
         }
 
-        for (int i = 0; i < word.getWordTiles().length; i++) {
-            int row = word.isVertical() ? word.getRow() + i : word.getRow();
-            int col = word.isVertical() ? word.getCol() : word.getCol() + i;
-            if (grid[row][col] == null) {
-                grid[row][col] = word.getWordTiles()[i];
-
-                if (middleTileActive) {
-                    score[CENTER][CENTER] = 0;
-                    middleTileActive = false;
-                }
-            }
+        ArrayList<Word> words = getWords(word);
+        int score = 0;
+        for (Word w : words) {
+            score += getScore(w);
         }
-
-        // print(grid);
-        return totalScore;
+        return score;
     }
 }
